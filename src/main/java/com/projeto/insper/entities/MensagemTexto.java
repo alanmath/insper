@@ -1,13 +1,19 @@
 package com.projeto.insper.entities;
 
-public class MensagemTexto extends Mensagem {
-    private String texto;
-    private String id;
+import jakarta.persistence.*;
 
-    public MensagemTexto(String texto, String destinatario, String autor) {
-        super(texto, destinatario, autor);
-        this.texto = texto;
-    }
+@Entity
+@Table(name = "mensagem_texto")
+@AttributeOverride(name = "autor", column = @Column(name = "autor_texto"))
+@AttributeOverride(name = "destinatario", column = @Column(name = "destinatario_texto"))
+public class MensagemTexto extends Mensagem {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id = 0L;
+
+    private String texto = "";
+    private String identifier = "";
 
     public String getTexto() {
         return texto;
@@ -17,16 +23,24 @@ public class MensagemTexto extends Mensagem {
         this.texto = texto;
     }
 
-    public void setDestinatario(String destinatario) {
-        this.destinatario = destinatario;
+    public MensagemTexto() {
+        super();
     }
 
-    public String setId (String id) {
-        this.id = id;
-        return this.id;
+    public MensagemTexto(String texto, String destinatario, String autor, String identifier) {
+        super(destinatario, autor);
+        this.texto = texto;
+        this.identifier = identifier;
+
     }
 
-    public String getId() {
-        return this.id;
+
+    public String setIdentifier (String identifier) {
+        this.identifier = identifier;
+        return this.identifier;
+    }
+
+    public String getIdentifier() {
+        return this.identifier;
     }
 }

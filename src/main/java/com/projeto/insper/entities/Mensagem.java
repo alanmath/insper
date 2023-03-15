@@ -1,16 +1,18 @@
 package com.projeto.insper.entities;
 
 
+import jakarta.persistence.MappedSuperclass;
+
+@MappedSuperclass
 public class Mensagem {
     // associe a classe mensagem a pessoa
-    private String texto;
     public String destinatario;
-    private String remetente;
+    public String autor;
 
-    public Mensagem(String texto, String destinatario, String autor) {
-        this.texto = texto;
-        this.destinatario = destinatario;
-        this.remetente = autor;
+    public Mensagem() {
     }
-
+    public Mensagem(String destinatario, String autor) {
+        this.destinatario = destinatario;
+        this.autor = autor;
+    }
 }

@@ -11,26 +11,30 @@ import com.projeto.insper.entities.Mensagem;
 import com.projeto.insper.entities.MensagemArquivo;
 import com.projeto.insper.entities.MensagemTexto;
 import com.projeto.insper.entities.Usuario;
+import com.projeto.insper.repositories.MensagemArquivoRepository;
+import com.projeto.insper.repositories.MensagemTextoRepository;
 
 
 @Service
 public class MensagemService {
-    private List<MensagemTexto> listaMensagensTexto = new ArrayList<>();
-    private List<MensagemArquivo> listaMensagensArquivo = new ArrayList<>();
+
+    @Autowired
+    private MensagemArquivoRepository mensagemArquivoRepository;
+
+    @Autowired
+    private MensagemTextoRepository mensagemTextoRepository;
 
     @Autowired
     private UsuarioService usuarioService;
 
 
     public List<Mensagem> listarTodas() {
-
         List<Mensagem> listaMensagens = new ArrayList<>();
 
-
-        for (Mensagem mensagem : listaMensagensTexto) {
+        for (Mensagem mensagem : mensagemArquivoRepository.findAll()) {
             listaMensagens.add(mensagem);
         }
-        for (Mensagem mensagem : listaMensagensArquivo) {
+        for (Mensagem mensagem : mensagemTextoRepository.findAll()) {
             listaMensagens.add(mensagem);
         }
         return listaMensagens;
@@ -38,8 +42,8 @@ public class MensagemService {
 
     public void adicionarMensagemTexto(MensagemTexto novaMensagem) {
         if (usuarioService.buscarUsuarioPorNome(novaMensagem.destinatario) != null) {
-            novaMensagem.setId(UUID.randomUUID().toString());
-            listaMensagensTexto.add(novaMensagem);
+            novaMensagem.setIdentifier(UUID.randomUUID().toString());
+            mensagemTextoRepository.save(novaMensagem);
 
         }
         else {
@@ -48,8 +52,8 @@ public class MensagemService {
     }
     public void adicionarMensagemArquivo(MensagemArquivo novaMensagem) {
         if (usuarioService.buscarUsuarioPorNome(novaMensagem.destinatario) != null) {
-            novaMensagem.setId(UUID.randomUUID().toString());
-            listaMensagensArquivo.add(novaMensagem);
+            novaMensagem.setIdentifier(UUID.randomUUID().toString());
+            mensagemArquivoRepository.save(novaMensagem);
 
         }
         else {
@@ -62,12 +66,12 @@ public class MensagemService {
         Usuario usuario = usuarioService.buscarUsuario(userId);
 
         
-        for (Mensagem mensagem : listaMensagensTexto) {
+        for (Mensagem mensagem : mensagemTextoRepository.findAll()) {
             if (mensagem.destinatario.equals(usuario.getNome())) {
                 mensagens.add(mensagem);
             }
         }
-        for (Mensagem mensagem : listaMensagensArquivo) {
+        for (Mensagem mensagem : mensagemArquivoRepository.findAll()) {
             if (mensagem.destinatario.equals(usuario.getNome())) {
                 mensagens.add(mensagem);
             }
@@ -76,13 +80,13 @@ public class MensagemService {
     }
 
     public Mensagem buscarMensagem(String id) {
-        for (MensagemTexto mensagem : listaMensagensTexto) {
-            if (mensagem.getId().equals(id)) {
+        for (MensagemTexto mensagem : mensagemTextoRepository.findAll()) {
+            if (mensagem.getIdentifier().equals(id)) {
                 return mensagem;
             }
         }
-        for (MensagemArquivo mensagem : listaMensagensArquivo) {
-            if (mensagem.getId().equals(id)) {
+        for (MensagemArquivo mensagem : mensagemArquivoRepository.findAll()) {
+            if (mensagem.getIdentifier().equals(id)) {
                 return mensagem;
             }
         }

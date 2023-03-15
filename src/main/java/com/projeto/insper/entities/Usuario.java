@@ -2,25 +2,36 @@ package com.projeto.insper.entities;
 
 import java.util.List;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+
+@Entity
+@Table(name= "usuario")
 public class  Usuario {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     private String nome = "";
     private String cpf;
-    private String id;
-    public List<MensagemTexto> mensagensTexto;
-    public List<MensagemArquivo> mensagensArquivo;
+    private String identifier;
 
 
-    public Usuario(String nome, String cpf) {
-        this.nome = nome;
-        this.cpf = cpf;
+
+    public Usuario() {
     }
 
-    public String setId (String id) {
-        this.id = id;
-        return this.id;
+    public String setId (String identifier) {
+        this.identifier = identifier;
+        return this.identifier;
     }
     public String getId() {
-        return this.id;
+        return this.identifier;
     }
     public String getNome() {
         return nome;
